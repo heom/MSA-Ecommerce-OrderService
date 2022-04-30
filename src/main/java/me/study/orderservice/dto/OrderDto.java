@@ -19,5 +19,6 @@ public class OrderDto {
     public OrderDto(RequestOrder requestOrder){
         this.productId = requestOrder.getProductId();
         this.qty = requestOrder.getQty();
+        this.unitPrice = requestOrder.getUnitPrice();
     }
 }

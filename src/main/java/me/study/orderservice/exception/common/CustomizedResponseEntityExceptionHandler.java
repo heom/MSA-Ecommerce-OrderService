@@ -1,7 +1,5 @@
 package me.study.orderservice.exception.common;
 
-import me.study.orderservice.exception.FeignException;
-import me.study.orderservice.exception.StockException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +18,9 @@ import java.util.Date;
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(StockException.class)
-    public final ResponseEntity<Object> handleStockException(StockException ex, WebRequest request){
-        ExceptionResponse exceptionResponse = getDefaultExceptionResponse(ex, request, HttpStatus.BAD_REQUEST, "Stock Error");
-        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(FeignException.class)
-    public final ResponseEntity<Object> handleFeignException(FeignException ex, WebRequest request){
-        ExceptionResponse exceptionResponse = getDefaultExceptionResponse(ex, request, ex.getHttpStatus(), "Feign Error");
-        return new ResponseEntity(exceptionResponse, ex.getHttpStatus());
-    }
-
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request){
+        ex.printStackTrace();
         ExceptionResponse exceptionResponse = getDefaultExceptionResponse(ex, request, HttpStatus.INTERNAL_SERVER_ERROR, "Server Error");
         return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }

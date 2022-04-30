@@ -30,16 +30,36 @@ class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("createOrder_not_found_user")
-    public void createOrder_not_found_user(){
+    @DisplayName("createOrder")
+    public void createOrder(){
         //given
         String url = getApiUrl("/orders");
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Authorization-Id", "test");
         RequestOrder requestOrder = RequestOrder.builder()
-                .productId("CATALOG-0001")
-                .qty(2)
-                .build();
+                                                .productId("CATALOG-0001")
+                                                .qty(2)
+                                                .unitPrice(1500)
+                                                .build();
+
+        //when
+        ResponseEntity<ResponseOrder> responseEntity = this.restTemplate.exchange(url, HttpMethod.POST,  new HttpEntity<>(headers), ResponseOrder.class, requestOrder);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    @DisplayName("createOrder_parameter_error")
+    public void createOrder_parameter_error(){
+        //given
+        String url = getApiUrl("/orders");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Authorization-Id", "test");
+        RequestOrder requestOrder = RequestOrder.builder()
+                                                .productId("CATALOG-0001")
+                                                .qty(2)
+                                                .build();
 
         //when
         ResponseEntity<ResponseOrder> responseEntity = this.restTemplate.exchange(url, HttpMethod.POST,  new HttpEntity<>(headers), ResponseOrder.class, requestOrder);
